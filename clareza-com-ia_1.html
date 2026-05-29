@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clareza com IA · Daniela Paiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0e0b14;
+  --bg2:    #150f20;
+  --bg3:    #1c1530;
+  --bg4:    #231b3a;
+  --violet: #7c3aed;
+  --violet2:#9d5ff5;
+  --violet3:#c4a0ff;
+  --violet-pale:rgba(124,58,237,0.12);
+  --gold:   #c9a05a;
+  --gold2:  #e8c47a;
+  --gold-pale:rgba(201,160,90,0.15);
+  --cream:  #f5f0e8;
+  --cream2: #e8e0d0;
+  --muted:  rgba(245,240,232,0.6);
+  --muted2: rgba(245,240,232,0.38);
+  --border: rgba(124,58,237,0.2);
+  --border-g:rgba(201,160,90,0.25);
+  --shadow: 0 4px 24px rgba(0,0,0,0.35);
+  --shadow-v:0 8px 40px rgba(124,58,237,0.2);
+  --r: 12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--bg);color:var(--cream);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--violet);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:80px 24px 60px;
+  position:relative;overflow:hidden;
+}
+.hero-orb1{
+  position:absolute;top:-20%;left:-10%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,0.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-orb2{
+  position:absolute;bottom:-10%;right:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,160,90,0.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-tag{
+  font-size:10px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--violet3);font-weight:600;margin-bottom:24px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  position:relative;z-index:1;
+  opacity:0;animation:up 0.8s 0.1s forwards;
+}
+.hero-tag::before,.hero-tag::after{content:'';width:28px;height:0.5px;background:var(--violet3);}
+.hero-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(48px,8vw,88px);
+  font-weight:300;line-height:1.05;
+  color:var(--cream);margin-bottom:8px;
+  position:relative;z-index:1;
+  opacity:0;animation:up 0.8s 0.2s forwards;
+}
+.hero-logo span{
+  background:linear-gradient(135deg,var(--violet2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  font-style:italic;
+}
+.hero-sub{
+  font-size:13px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:40px;
+  position:relative;z-index:1;
+  opacity:0;animation:up 0.8s 0.3s forwards;
+}
+.hero-intro{
+  max-width:520px;font-size:16px;font-weight:300;
+  color:var(--muted);line-height:1.9;margin-bottom:48px;
+  position:relative;z-index:1;
+  opacity:0;animation:up 0.8s 0.4s forwards;
+}
+.hero-aviso{
+  max-width:560px;background:rgba(124,58,237,0.08);
+  border:0.5px solid var(--border);border-radius:var(--r);
+  padding:20px 24px;font-size:13px;font-weight:300;
+  color:var(--muted);line-height:1.8;
+  position:relative;z-index:1;margin-bottom:48px;
+  opacity:0;animation:up 0.8s 0.5s forwards;
+  text-align:left;
+}
+.hero-aviso strong{color:var(--violet3);font-weight:500;}
+.hero-stats{
+  display:flex;align-items:center;gap:32px;
+  position:relative;z-index:1;
+  opacity:0;animation:up 0.8s 0.6s forwards;
+}
+.hero-stat-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px;font-weight:300;color:var(--gold);display:block;line-height:1;
+}
+.hero-stat-l{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);}
+.hero-sep{width:0.5px;height:36px;background:rgba(255,255,255,0.1);}
+.scroll-down{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted2);display:flex;flex-direction:column;align-items:center;gap:8px;
+  z-index:1;animation:pulse 2s infinite;
+}
+.scroll-down svg{color:var(--violet3);}
+
+/* ── STRIP ── */
+.strip{
+  background:linear-gradient(90deg,var(--violet) 0%,var(--violet2) 50%,var(--violet) 100%);
+  padding:14px 0;overflow:hidden;white-space:nowrap;
+}
+.strip-inner{display:inline-flex;gap:48px;animation:scroll 22s linear infinite;}
+.strip-item{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:16px;}
+.strip-item::after{content:'✦';font-size:8px;opacity:0.7;}
+
+/* ── LAYOUT ── */
+.wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+/* ── BLOCO HEADER ── */
+.bloco-header{
+  padding:72px 24px 32px;text-align:center;
+}
+.bloco-tag{
+  font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--violet3);font-weight:600;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+}
+.bloco-tag::before,.bloco-tag::after{content:'';width:24px;height:0.5px;background:var(--violet3);}
+.bloco-titulo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,4vw,42px);font-weight:400;
+  color:var(--cream);line-height:1.2;
+}
+.bloco-titulo em{font-style:italic;color:var(--gold);}
+
+/* ── GRID DE PROMPTS ── */
+.prompts-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:10px;padding:24px;
+  max-width:900px;margin:0 auto;
+}
+.prompt-card{
+  background:var(--bg2);
+  border:0.5px solid var(--border);
+  border-radius:var(--r);
+  padding:20px 16px;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  gap:10px;text-align:center;
+  transition:transform 0.2s,box-shadow 0.2s,background 0.2s,border-color 0.2s;
+  position:relative;overflow:hidden;
+  border-top:2px solid var(--violet);
+}
+.prompt-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(124,58,237,0.1),transparent);
+  pointer-events:none;
+}
+.prompt-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-v);
+  background:var(--bg3);
+  border-color:var(--violet2);
+}
+.prompt-card.gold{border-top-color:var(--gold);}
+.prompt-card.gold::before{background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,160,90,0.1),transparent);}
+.prompt-card.gold:hover{box-shadow:0 8px 40px rgba(201,160,90,0.2);}
+.pc-num{
+  font-size:9px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--violet3);font-weight:600;font-family:'DM Sans',sans-serif;
+}
+.prompt-card.gold .pc-num{color:var(--gold);}
+.pc-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--violet-pale);border:0.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--violet3);transition:transform 0.2s;
+}
+.prompt-card.gold .pc-icon{background:var(--gold-pale);border-color:var(--border-g);color:var(--gold2);}
+.prompt-card:hover .pc-icon{transform:scale(1.1);}
+.pc-nome{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;font-weight:600;color:var(--cream);line-height:1.2;
+}
+.pc-para{font-size:11px;font-weight:300;color:var(--muted2);line-height:1.5;}
+.pc-arrow{font-size:14px;color:var(--violet3);transition:transform 0.2s,color 0.2s;}
+.prompt-card.gold .pc-arrow{color:var(--gold);}
+.prompt-card:hover .pc-arrow{transform:translateY(2px);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(14,11,20,0.8);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.25s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:var(--bg2);
+  border:0.5px solid var(--border);
+  border-radius:16px;
+  width:100%;max-width:580px;
+  max-height:85vh;overflow-y:auto;
+  box-shadow:var(--shadow-v);
+  transform:translateY(20px) scale(0.97);
+  transition:transform 0.3s ease;
+  position:relative;
+}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1);}
+.modal-top{
+  position:sticky;top:0;z-index:10;
+  background:var(--bg3);
+  padding:20px 22px 18px;
+  border-bottom:0.5px solid var(--border);
+  border-radius:16px 16px 0 0;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.modal-num{
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--violet3);font-weight:600;margin-bottom:4px;
+}
+.modal-num.gold{color:var(--gold);}
+.modal-titulo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;color:var(--cream);flex:1;line-height:1.2;
+}
+.modal-fechar{
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,0.06);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted2);font-size:16px;flex-shrink:0;
+  transition:background 0.2s,color 0.2s;
+}
+.modal-fechar:hover{background:var(--violet);color:white;}
+.modal-body{padding:24px 22px 28px;}
+.modal-para-que{
+  font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--violet3);font-weight:600;margin-bottom:8px;
+}
+.modal-para-que.gold{color:var(--gold);}
+.modal-descricao{
+  font-size:14px;color:var(--muted);line-height:1.75;
+  margin-bottom:22px;font-weight:300;
+}
+.modal-prompt-label{
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted2);font-weight:500;margin-bottom:10px;
+}
+.modal-prompt-box{
+  background:var(--bg);
+  border:0.5px solid var(--border);
+  border-radius:10px;padding:18px 20px;
+  font-size:14px;color:var(--cream2);line-height:1.8;
+  font-weight:300;margin-bottom:16px;
+  position:relative;
+  border-left:2px solid var(--violet);
+}
+.modal-prompt-box.gold{border-left-color:var(--gold);}
+.modal-copiar{
+  width:100%;background:var(--violet);color:white;
+  border:none;border-radius:40px;
+  padding:14px;cursor:pointer;
+  font-size:12px;letter-spacing:0.15em;text-transform:uppercase;
+  font-weight:600;font-family:'DM Sans',sans-serif;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:16px;
+  box-shadow:0 4px 20px rgba(124,58,237,0.3);
+}
+.modal-copiar:hover{background:var(--violet2);transform:translateY(-2px);box-shadow:0 6px 28px rgba(124,58,237,0.45);}
+.modal-copiar.gold{background:var(--gold);color:#0e0b14;box-shadow:0 4px 20px rgba(201,160,90,0.3);}
+.modal-copiar.gold:hover{background:var(--gold2);box-shadow:0 6px 28px rgba(201,160,90,0.45);}
+.modal-dica-label{
+  font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted2);font-weight:500;margin-bottom:6px;
+}
+.modal-dica{
+  font-size:13px;color:var(--muted);line-height:1.7;
+  font-style:italic;font-weight:300;
+  padding:12px 16px;background:rgba(255,255,255,0.03);
+  border-radius:8px;border:0.5px solid rgba(255,255,255,0.06);
+}
+
+/* ── PROGRESSO ── */
+.progresso-wrap{
+  max-width:900px;margin:0 auto;padding:0 24px 40px;
+  text-align:center;
+}
+.prog-label{
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted2);font-weight:500;margin-bottom:10px;
+  display:flex;justify-content:space-between;
+}
+.prog-label span{color:var(--violet3);}
+.prog-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--gold));border-radius:2px;transition:width 0.5s ease;width:0%;}
+
+/* ── UPSELL CEP ── */
+.upsell-wrap{max-width:900px;margin:40px auto 0;padding:0 24px 80px;}
+.upsell{
+  background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 60%,var(--bg2) 100%);
+  border:0.5px solid var(--border);
+  border-radius:16px;padding:40px 36px;
+  position:relative;overflow:hidden;
+}
+.upsell::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 20% 50%,rgba(124,58,237,0.08),transparent);
+  pointer-events:none;
+}
+.upsell-ey{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--violet3);font-weight:500;margin-bottom:10px;}
+.upsell-tit{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,34px);font-weight:400;color:var(--cream);line-height:1.25;margin-bottom:10px;}
+.upsell-tit em{font-style:italic;color:var(--gold);}
+.upsell-sub{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:28px;font-weight:300;}
+.upsell-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;}
+.ui{background:rgba(255,255,255,0.04);border:0.5px solid rgba(124,58,237,0.15);border-radius:10px;padding:16px;transition:background 0.2s,border-color 0.2s;}
+.ui:hover{background:rgba(124,58,237,0.08);border-color:var(--border);}
+.ui-ic{color:var(--violet3);margin-bottom:8px;opacity:0.8;}
+.ui-n{font-size:12px;font-weight:500;color:var(--cream);margin-bottom:4px;}
+.ui-d{font-size:11px;color:var(--muted2);line-height:1.55;font-weight:300;}
+.upsell-destaques{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;padding:18px;background:rgba(124,58,237,0.06);border-radius:10px;border:0.5px solid var(--border);}
+.ud{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;}
+.ud svg{flex-shrink:0;margin-top:2px;color:var(--violet3);}
+.upsell-excl{font-size:12px;letter-spacing:0.06em;color:rgba(201,160,90,0.65);text-align:center;margin-bottom:22px;padding:10px;border:0.5px dashed rgba(201,160,90,0.2);border-radius:8px;}
+.upsell-cta{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--violet),var(--violet2));color:white;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;padding:16px 36px;border-radius:40px;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;box-shadow:0 4px 24px rgba(124,58,237,0.35);}
+.upsell-cta:hover{transform:translateY(-3px);box-shadow:0 8px 36px rgba(124,58,237,0.5);}
+
+/* ── FOOTER ── */
+.footer{background:var(--bg);border-top:0.5px solid rgba(124,58,237,0.15);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--muted2);letter-spacing:0.1em;}
+.footer-brand span{color:var(--violet3);}
+.footer-email a{font-size:11px;color:var(--gold);text-decoration:none;}
+.footer-email a:hover{text-decoration:underline;}
+.footer-r{font-size:11px;color:var(--muted2);text-align:right;}
+
+/* ── WA FLUTUANTE ── */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:200;width:52px;height:52px;border-radius:50%;background:#25d366;box-shadow:0 4px 20px rgba(37,211,102,0.4);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,0.55);}
+.wa-tip{position:absolute;right:60px;white-space:nowrap;background:var(--bg3);color:var(--cream);font-size:11px;padding:6px 12px;border-radius:20px;opacity:0;transition:opacity 0.2s;pointer-events:none;font-family:'DM Sans',sans-serif;border:0.5px solid var(--border);}
+.wa-float:hover .wa-tip{opacity:1;}
+
+/* ── ANIMAÇÕES ── */
+@keyframes up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:0.5;}50%{opacity:1;}}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.6s,transform 0.6s;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ── MOBILE ── */
+@media(max-width:700px){
+  .prompts-grid{grid-template-columns:repeat(2,1fr);padding:16px;}
+  .upsell-grid{grid-template-columns:1fr 1fr;}
+  .upsell{padding:28px 20px;}
+  .footer{flex-direction:column;align-items:flex-start;padding:20px;}
+  .hero-stats{gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb1"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-tag">Bônus Exclusivo</div>
+  <h1 class="hero-logo">Clareza com <span>IA</span></h1>
+  <p class="hero-sub">20 Prompts Estratégicos · Daniela Paiva</p>
+  <p class="hero-intro">Esses prompts foram criados para ajudar você a transformar sua presença no Instagram de forma mais clara, estratégica e humana. Você não precisa entender de marketing ou algoritmo para usar. Basta copiar, colar no ChatGPT e responder com honestidade.</p>
+  <div class="hero-aviso">
+    <strong>Importante para todos os prompts:</strong> Peça sempre que o ChatGPT fale de forma simples, acolhedora e estratégica. Evite respostas genéricas ou robóticas. Quanto mais verdadeira você for nas respostas, mais personalizado será o resultado.
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-n">20</span><span class="hero-stat-l">Prompts</span></div>
+    <div class="hero-sep"></div>
+    <div class="hero-stat"><span class="hero-stat-n">3</span><span class="hero-stat-l">Blocos</span></div>
+    <div class="hero-sep"></div>
+    <div class="hero-stat"><span class="hero-stat-n">+3</span><span class="hero-stat-l">Extras</span></div>
+  </div>
+  <div class="scroll-down">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    explorar
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item">Posicionamento</span>
+    <span class="strip-item">Bio Estratégica</span>
+    <span class="strip-item">Conteúdo</span>
+    <span class="strip-item">Tom de Voz</span>
+    <span class="strip-item">Identidade Visual</span>
+    <span class="strip-item">Vendas</span>
+    <span class="strip-item">Autoridade</span>
+    <span class="strip-item">Clareza</span>
+    <span class="strip-item">Posicionamento</span>
+    <span class="strip-item">Bio Estratégica</span>
+    <span class="strip-item">Conteúdo</span>
+    <span class="strip-item">Tom de Voz</span>
+    <span class="strip-item">Identidade Visual</span>
+    <span class="strip-item">Vendas</span>
+    <span class="strip-item">Autoridade</span>
+    <span class="strip-item">Clareza</span>
+  </div>
+</div>
+
+<!-- BLOCO 1 -->
+<div class="bloco-header reveal">
+  <div class="bloco-tag">Bloco 1</div>
+  <div class="bloco-titulo">Posicionamento e <em>Perfil</em></div>
+</div>
+<div class="prompts-grid" id="grid1">
+  <div class="prompt-card reveal" onclick="abrirPrompt(1)">
+    <span class="pc-num">01</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+    <span class="pc-nome">Sua Foto Ideal</span>
+    <span class="pc-para">Foto que transmite autoridade para o seu nicho</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(2)">
+    <span class="pc-num">02</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div>
+    <span class="pc-nome">Sua Bio Estratégica</span>
+    <span class="pc-para">3 versões de bio prontas para usar</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(3)">
+    <span class="pc-num">03</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.8 5.5 21 7 14 2 9.3 9 8.5"/></svg></div>
+    <span class="pc-nome">Seu Diferencial</span>
+    <span class="pc-para">O que te torna única no seu nicho</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(4)">
+    <span class="pc-num">04</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+    <span class="pc-nome">Identidade Visual</span>
+    <span class="pc-para">Paleta e estilo que combinam com você</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(5)">
+    <span class="pc-num">05</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+    <span class="pc-nome">30 Dias de Conteúdo</span>
+    <span class="pc-para">Pauta completa baseada na sua persona</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(6)">
+    <span class="pc-num">06</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <span class="pc-nome">Seu Tom de Voz</span>
+    <span class="pc-para">Como se comunicar com autoridade e naturalidade</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(7)">
+    <span class="pc-num">07</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+    <span class="pc-nome">Seu Primeiro Vídeo</span>
+    <span class="pc-para">Roteiro para quem tem medo de aparecer</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(8)">
+    <span class="pc-num">08</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+    <span class="pc-nome">Auditoria do Perfil</span>
+    <span class="pc-para">O que está funcionando e o que afasta clientes</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+</div>
+
+<!-- BLOCO 2 -->
+<div class="bloco-header reveal">
+  <div class="bloco-tag">Bloco 2</div>
+  <div class="bloco-titulo">Conteúdo e <em>Conexão</em></div>
+</div>
+<div class="prompts-grid">
+  <div class="prompt-card reveal" onclick="abrirPrompt(9)">
+    <span class="pc-num">09</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg></div>
+    <span class="pc-nome">Ganchos que Prendem</span>
+    <span class="pc-para">20 aberturas que param o scroll</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(10)">
+    <span class="pc-num">10</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+    <span class="pc-nome">Depoimento em Conteúdo</span>
+    <span class="pc-para">Transformar feedback em post poderoso</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(11)">
+    <span class="pc-num">11</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+    <span class="pc-nome">Carrossel de Autoridade</span>
+    <span class="pc-para">Ser vista como referência sem parecer arrogante</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(12)">
+    <span class="pc-num">12</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <span class="pc-nome">Legenda que Vende</span>
+    <span class="pc-para">Vender sem pressionar nem parecer forçada</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(13)">
+    <span class="pc-num">13</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></div>
+    <span class="pc-nome">Reels de 30 Segundos</span>
+    <span class="pc-para">Roteiro curto, forte e simples de gravar</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(14)">
+    <span class="pc-num">14</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+    <span class="pc-nome">Sequência de Stories</span>
+    <span class="pc-para">Stories que aquecem e geram interação</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(15)">
+    <span class="pc-num">15</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
+    <span class="pc-nome">Série de Uma Semana</span>
+    <span class="pc-para">7 dias de conteúdo estratégico com propósito</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(16)">
+    <span class="pc-num">16</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+    <span class="pc-nome">Quebrando Objeções</span>
+    <span class="pc-para">Responder dúvidas sem parecer insistente</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+</div>
+
+<!-- BLOCO 3 -->
+<div class="bloco-header reveal">
+  <div class="bloco-tag">Bloco 3</div>
+  <div class="bloco-titulo">Negócio e <em>Posicionamento</em></div>
+</div>
+<div class="prompts-grid">
+  <div class="prompt-card reveal" onclick="abrirPrompt(17)">
+    <span class="pc-num">17</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+    <span class="pc-nome">Sua Proposta de Valor</span>
+    <span class="pc-para">Uma frase que explica tudo que você faz</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(18)">
+    <span class="pc-num">18</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.39 19a19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.91-8.43A2 2 0 0 1 3.46 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.82-.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg></div>
+    <span class="pc-nome">Descrição do Serviço</span>
+    <span class="pc-para">Texto pra WhatsApp, direct ou página de vendas</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(19)">
+    <span class="pc-num">19</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <span class="pc-nome">Oferta Irresistível</span>
+    <span class="pc-para">Tornar seu serviço mais desejável com bônus reais</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+  <div class="prompt-card reveal" onclick="abrirPrompt(20)">
+    <span class="pc-num">20</span>
+    <div class="pc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <span class="pc-nome">Pitch de 60 Segundos</span>
+    <span class="pc-para">Explicar seu negócio com clareza e confiança</span>
+    <span class="pc-arrow">↓</span>
+  </div>
+</div>
+
+<!-- EXTRAS -->
+<div class="bloco-header reveal">
+  <div class="bloco-tag" style="color:var(--gold);">
+    <span style="width:24px;height:0.5px;background:var(--gold);display:inline-block;"></span>
+    Bônus Extra
+    <span style="width:24px;height:0.5px;background:var(--gold);display:inline-block;"></span>
+  </div>
+  <div class="bloco-titulo">Desbloqueio e <em>Clareza</em></div>
+</div>
+<div class="prompts-grid">
+  <div class="prompt-card gold reveal" onclick="abrirPrompt(21)" style="grid-column:span 1">
+    <span class="pc-num">✦</span>
+    <div class="pc-icon" style="background:var(--gold-pale);border-color:var(--border-g);color:var(--gold2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div>
+    <span class="pc-nome">Perfil que Não Me Representa</span>
+    <span class="pc-para">Comunicar sua essência de verdade</span>
+    <span class="pc-arrow" style="color:var(--gold)">↓</span>
+  </div>
+  <div class="prompt-card gold reveal" onclick="abrirPrompt(22)">
+    <span class="pc-num">✦</span>
+    <div class="pc-icon" style="background:var(--gold-pale);border-color:var(--border-g);color:var(--gold2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+    <span class="pc-nome">Minha História como Posicionamento</span>
+    <span class="pc-para">Sua trajetória como diferencial real</span>
+    <span class="pc-arrow" style="color:var(--gold)">↓</span>
+  </div>
+  <div class="prompt-card gold reveal" onclick="abrirPrompt(23)">
+    <span class="pc-num">✦</span>
+    <div class="pc-icon" style="background:var(--gold-pale);border-color:var(--border-g);color:var(--gold2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+    <span class="pc-nome">Perder o Medo de Aparecer</span>
+    <span class="pc-para">Dar o primeiro passo de forma leve e segura</span>
+    <span class="pc-arrow" style="color:var(--gold)">↓</span>
+  </div>
+</div>
+
+<!-- PROGRESSO -->
+<div class="progresso-wrap reveal">
+  <div class="prog-label">Prompts explorados <span id="prog-txt">0 de 23</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+</div>
+
+<!-- UPSELL -->
+<div class="upsell-wrap">
+  <div class="upsell reveal">
+    <div class="upsell-ey">Pronta para ir muito além</div>
+    <div class="upsell-tit">Consultoria CEP.<br><em>Tudo pronto pra você aplicar.</em></div>
+    <div class="upsell-sub">Uma experiência que você nunca teve antes. Estratégia, conteúdo, branding e posicionamento — tudo construído especificamente pra você, entregue pronto pra aplicar e postar. Sem precisar descobrir sozinha o que fazer.</div>
+    <div class="upsell-destaques">
+      <div class="ud"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg><span>2 reuniões ao vivo de 1h com a Dani — uma para se conhecer, outra para explicar cada detalhe da entrega</span></div>
+      <div class="ud"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg><span>Portal exclusivo interativo — tudo organizado, clicável e fácil de consultar a qualquer hora</span></div>
+      <div class="ud"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg><span>Persona detalhada em todas as camadas de dores e desejos — como você nunca viu por aí</span></div>
+      <div class="ud"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg><span>30 dias de conteúdo prontos pra postar — temas, formatos e legendas estruturadas</span></div>
+    </div>
+    <div class="upsell-grid">
+      <div class="ui"><div class="ui-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div class="ui-n">Estratégia completa</div><div class="ui-d">Posicionamento e diferencial prontos pra aplicar.</div></div>
+      <div class="ui"><div class="ui-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="ui-n">Branding da marca</div><div class="ui-d">Instruções completas de identidade e presença.</div></div>
+      <div class="ui"><div class="ui-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div><div class="ui-n">Análise de concorrência</div><div class="ui-d">Onde está o seu espaço e o que te diferencia.</div></div>
+      <div class="ui"><div class="ui-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="ui-n">Persona profunda</div><div class="ui-d">Dores, desejos e medos mapeados em detalhes.</div></div>
+      <div class="ui"><div class="ui-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="ui-n">Funil de vendas</div><div class="ui-d">Da atração à conversão, estruturado e pronto.</div></div>
+      <div class="ui"><div class="ui-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="ui-n">30 dias de conteúdo</div><div class="ui-d">Tudo pronto pra postar. Só executar.</div></div>
+    </div>
+    <div class="upsell-excl">✦ Uma entrega que não existe em nenhum outro lugar. Feita por mim, pra você.</div>
+    <a href="https://wa.me/5511944906578?text=Ol%C3%A1%2C%20Dani%21%20Quero%20saber%20mais%20sobre%20a%20Consultoria%20CEP." target="_blank" class="upsell-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.39 19a19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.91-8.43A2 2 0 0 1 3.46 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.82-.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+      Quero conhecer a Consultoria CEP
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>
+    <div class="footer-brand">Clareza com IA <span>·</span> Daniela Paiva</div>
+    <div class="footer-email"><a href="mailto:danielapaiva.com@gmail.com">danielapaiva.com@gmail.com</a></div>
+  </div>
+  <div class="footer-r">Bônus exclusivo<br>Uso pessoal e intransferível</div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/5511944906578?text=Ol%C3%A1%2C%20Dani%21%20Tenho%20d%C3%BAvidas%20sobre%20os%20prompts." target="_blank" class="wa-float">
+  <div class="wa-tip">Falar com Dani 💛</div>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+</a>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="fecharModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-top" id="modal-top">
+      <div style="flex:1">
+        <div class="modal-num" id="modal-num"></div>
+        <div class="modal-titulo" id="modal-titulo"></div>
+      </div>
+      <button class="modal-fechar" onclick="fecharDireto()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-para-que" id="modal-para-que-label">Para que serve</div>
+      <div class="modal-descricao" id="modal-para-que"></div>
+      <div class="modal-prompt-label">Prompt — copie e cole no ChatGPT</div>
+      <div class="modal-prompt-box" id="modal-prompt-box">
+        <span id="modal-prompt"></span>
+      </div>
+      <button class="modal-copiar" id="modal-copiar-btn" onclick="copiarPrompt()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copiar prompt
+      </button>
+      <div class="modal-dica-label">Dica de uso</div>
+      <div class="modal-dica" id="modal-dica"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const prompts = {
+  1:{num:"Prompt 01",nome:"Sua Foto Ideal",para_que:"Descobrir qual tipo de foto transmite autoridade e confiança para o seu nicho.",prompt:"Me ajude a entender qual tipo de foto de perfil transmite mais autoridade, proximidade e confiança para o meu nicho. Antes de responder, me faça perguntas importantes sobre minha personalidade, meu trabalho e o tipo de cliente que quero atrair. Quero sugestões simples e possíveis de aplicar, sem precisar parecer uma influencer perfeita.",dica:"Responda as perguntas com o máximo de detalhes. Quanto mais você contar sobre sua personalidade e negócio, mais certeira será a sugestão.",gold:false},
+  2:{num:"Prompt 02",nome:"Sua Bio Estratégica",para_que:"Criar 3 versões de bio — acolhedora, estratégica e profissional.",prompt:"Quero que você crie 3 versões de bio para meu Instagram. Uma mais acolhedora, uma mais estratégica e uma mais forte e profissional. Antes disso, me faça perguntas para entender quem eu sou, o que faço, para quem quero falar e como quero ser percebida.",dica:"Deixe o ChatGPT te fazer as perguntas antes de pedir as versões. As bios ficam muito melhores quando ele entende sua história primeiro.",gold:false},
+  3:{num:"Prompt 03",nome:"Seu Diferencial",para_que:"Descobrir o que te torna única, mesmo achando que já existe muita gente no mesmo nicho.",prompt:"Me ajude a descobrir qual pode ser meu diferencial no Instagram de forma verdadeira e estratégica. Quero entender o que me torna única, mesmo achando que já existem muitas pessoas falando sobre isso.",dica:"Fale sobre sua trajetória, suas dificuldades e o que você acredita que faz diferente. O diferencial raramente está no produto — está em quem você é.",gold:false},
+  4:{num:"Prompt 04",nome:"Identidade Visual",para_que:"Criar uma paleta e identidade visual que combine com sua personalidade e seja fácil de manter.",prompt:"Me ajude a criar uma paleta de cores e uma identidade visual que combine com minha personalidade, meu nicho e a sensação que quero transmitir no meu perfil. Quero algo elegante, simples, humano e fácil de manter.",dica:"Descreva palavras que representam como você quer que as pessoas se sintam ao ver seu perfil. Ex: acolhedor, sofisticado, leve, forte.",gold:false},
+  5:{num:"Prompt 05",nome:"30 Dias de Conteúdo",para_que:"Gerar uma pauta completa de um mês baseada nas dores e desejos do seu cliente ideal.",prompt:"Antes de criar a pauta, me faça perguntas sobre meu nicho, meu produto ou serviço e os clientes que quero atrair. Depois, crie uma pauta estratégica de 30 dias de conteúdo para meu Instagram baseada nas dores, sonhos, dúvidas e desejos dessas pessoas. Quero ideias simples, humanas e que gerem conexão de verdade.",dica:"Responda as perguntas com honestidade. Quanto mais você souber sobre quem você quer atrair, mais certeira será a pauta.",gold:false},
+  6:{num:"Prompt 06",nome:"Seu Tom de Voz",para_que:"Descobrir como se comunicar com autoridade sem perder sua naturalidade.",prompt:"Me ajude a descobrir qual deve ser meu tom de voz no Instagram para que eu consiga transmitir autoridade sem parecer forçada. Quero uma comunicação humana, clara e que combine comigo.",dica:"Compartilhe exemplos de perfis que você admira e explique o que te atrai neles. Isso ajuda o ChatGPT a calibrar o tom certo pra você.",gold:false},
+  7:{num:"Prompt 07",nome:"Seu Primeiro Vídeo",para_que:"Criar um roteiro simples para quem tem medo de aparecer na câmera.",prompt:"Tenho medo de aparecer no Instagram. Quero que você crie um roteiro simples, acolhedor e natural para meu primeiro vídeo, como se eu estivesse conversando com uma amiga.",dica:"Conta pro ChatGPT o que você sente quando pensa em aparecer. Quanto mais honesta você for, mais o roteiro vai parecer com você.",gold:false},
+  8:{num:"Prompt 08",nome:"Auditoria do Perfil",para_que:"Identificar o que está funcionando e o que está afastando clientes no seu perfil.",prompt:"Quero que você faça uma análise rápida e estratégica do meu perfil do Instagram. Vou enviar minha bio, meu @ e explicar sobre meu nicho. Quero que você me mostre o que transmite confiança, o que enfraquece meu posicionamento e o que eu poderia melhorar primeiro.",dica:"Cole sua bio completa, diga seu @ e explique quem são seus clientes. Quanto mais contexto, mais precisa será a análise.",gold:false},
+  9:{num:"Prompt 09",nome:"Ganchos que Prendem",para_que:"Criar aberturas de post que façam as pessoas pararem de rolar o feed.",prompt:"Crie 20 ideias de ganchos fortes e humanos para meus conteúdos com base nas dores, inseguranças e desejos dos clientes que quero atrair.",dica:"Explique quem são seus clientes, o que eles sentem e o que eles buscam. O gancho perfeito começa pelo que a pessoa está pensando antes de ver o post.",gold:false},
+  10:{num:"Prompt 10",nome:"Depoimento em Conteúdo",para_que:"Usar o que seus clientes dizem para criar conteúdo poderoso e natural.",prompt:"Vou te enviar um depoimento de cliente. Quero que você transforme isso em conteúdos emocionais, estratégicos e naturais para Instagram, sem parecer propaganda forçada.",dica:"Cole o depoimento exatamente como o cliente escreveu. A linguagem dele é ouro — ela vai aparecer no conteúdo e gerar identificação imediata.",gold:false},
+  11:{num:"Prompt 11",nome:"Carrossel de Autoridade",para_que:"Criar um carrossel que te posicione como referência sem parecer arrogante.",prompt:"Crie um carrossel estratégico que faça as pessoas me enxergarem como referência no meu nicho sem parecer arrogante ou artificial.",dica:"Explique seu nicho e qual transformação você entrega. O melhor carrossel de autoridade não fala sobre você — fala sobre o problema que você resolve.",gold:false},
+  12:{num:"Prompt 12",nome:"Legenda que Vende",para_que:"Criar legendas que despertam desejo sem parecer insistente.",prompt:"Me ajude a criar uma legenda de venda humana, acolhedora e estratégica. Quero despertar desejo e conexão sem parecer insistente.",dica:"Conta qual produto ou serviço quer vender e qual é a maior transformação que ele entrega. A venda começa muito antes do CTA.",gold:false},
+  13:{num:"Prompt 13",nome:"Reels de 30 Segundos",para_que:"Criar roteiros curtos, fortes e fáceis de gravar.",prompt:"Crie um roteiro de reels curto, forte e simples de gravar, com começo que prende atenção, desenvolvimento claro e final que gere conexão ou ação.",dica:"Diga o tema que quer abordar e seu nicho. Reels curtos funcionam quando têm uma única mensagem muito clara.",gold:false},
+  14:{num:"Prompt 14",nome:"Sequência de Stories",para_que:"Criar stories que aquecem a audiência e geram interação naturalmente.",prompt:"Crie uma sequência estratégica de stories para aquecer minha audiência, gerar proximidade e fazer as pessoas interagirem comigo naturalmente.",dica:"Explique em que momento do negócio você está — lançando algo, construindo audiência, querendo vender. A sequência muda de acordo com o objetivo.",gold:false},
+  15:{num:"Prompt 15",nome:"Série de Uma Semana",para_que:"Montar 7 dias de conteúdo estratégico com começo, meio e fim.",prompt:"Monte uma sequência de conteúdos para 7 dias que me ajude a fortalecer meu posicionamento, criar conexão e gerar mais autoridade no Instagram.",dica:"Diga qual é o objetivo da semana — engajamento, vendas, autoridade ou crescimento. Cada semana tem um ritmo diferente.",gold:false},
+  16:{num:"Prompt 16",nome:"Quebrando Objeções",para_que:"Criar conteúdos que respondem dúvidas sem parecer que você está convencendo alguém.",prompt:"Me ajude a criar conteúdos que respondam dúvidas e inseguranças comuns dos meus clientes sem parecer que estou tentando convencer alguém o tempo todo.",dica:"Liste as 3 principais dúvidas ou objeções que seus clientes têm antes de comprar. Esse conteúdo elimina o medo antes mesmo da pessoa chegar até você.",gold:false},
+  17:{num:"Prompt 17",nome:"Sua Proposta de Valor",para_que:"Criar uma frase clara que explica o que você faz e por que seu trabalho é diferente.",prompt:"Me ajude a criar uma frase simples, forte e clara que explique o que faço, como ajudo pessoas e por que meu trabalho é diferente.",dica:"Essa frase vai aparecer na sua bio, no seu pitch e em todo lugar. Vale gastar um tempo aqui para acertar.",gold:false},
+  18:{num:"Prompt 18",nome:"Descrição do Serviço",para_que:"Criar uma descrição que vende no WhatsApp, direct ou página de vendas.",prompt:"Crie uma descrição estratégica e humana do meu serviço para eu usar no WhatsApp, direct ou página de vendas. Quero algo claro, profissional e acolhedor.",dica:"Explique o que seu serviço entrega, em quanto tempo e qual a transformação que o cliente sente. Descrição boa não fala sobre o produto — fala sobre o que a pessoa vai ganhar.",gold:false},
+  19:{num:"Prompt 19",nome:"Oferta Irresistível",para_que:"Tornar seu serviço mais desejável com bônus e percepção de valor real.",prompt:"Me ajude a montar uma oferta mais desejável para meu serviço, incluindo bônus, percepção de valor e diferenciais sem parecer exagerado.",dica:"Diga o que você já entrega hoje e quanto custa. Os melhores bônus resolvem uma dor que o produto principal não cobre.",gold:false},
+  20:{num:"Prompt 20",nome:"Pitch de 60 Segundos",para_que:"Explicar seu trabalho com clareza e confiança em qualquer situação.",prompt:"Crie um pitch simples e natural de até 60 segundos para eu conseguir explicar meu trabalho com clareza e confiança sem parecer decorado.",dica:"Fale sobre o que você faz, para quem e qual o resultado. Depois pratique em voz alta até parecer conversa, não apresentação.",gold:false},
+  21:{num:"Extra ✦",nome:"Perfil que Não Me Representa",para_que:"Entender por que o perfil não comunica sua essência e o que fazer.",prompt:"Me ajude a entender por que sinto que meu perfil não representa quem eu realmente sou e o que posso fazer para comunicar minha essência de forma mais clara e estratégica.",dica:"Descreva como você se sente quando olha pro seu próprio perfil. Essa honestidade é o ponto de partida de tudo.",gold:true},
+  22:{num:"Extra ✦",nome:"Minha História como Posicionamento",para_que:"Usar sua trajetória como diferencial e fonte de conteúdo poderoso.",prompt:"Quero que você me ajude a transformar minha história, minhas experiências e minhas dificuldades em conteúdos que gerem conexão, autoridade e identificação.",dica:"Conte sua história sem filtro — as partes difíceis são exatamente o que gera mais conexão. Sua vulnerabilidade é sua maior força.",gold:true},
+  23:{num:"Extra ✦",nome:"Perder o Medo de Aparecer",para_que:"Entender o que trava emocionalmente e dar o primeiro passo de forma leve.",prompt:"Me ajude a entender o que pode estar me travando emocionalmente para aparecer no Instagram e me dê orientações simples, humanas e práticas para começar aos poucos.",dica:"Fale sobre o que você sente quando pensa em aparecer — julgamento, perfeccionismo, medo de errar. Nomear o medo é o primeiro passo para ele diminuir.",gold:true}
+};
+
+const abertos = new Set();
+
+function abrirPrompt(n) {
+  const p = prompts[n];
+  const isGold = p.gold;
+  document.getElementById('modal-num').textContent = p.num;
+  document.getElementById('modal-num').className = 'modal-num' + (isGold ? ' gold' : '');
+  document.getElementById('modal-titulo').textContent = p.nome;
+  document.getElementById('modal-para-que-label').className = 'modal-para-que' + (isGold ? ' gold' : '');
+  document.getElementById('modal-para-que').textContent = p.para_que;
+  document.getElementById('modal-prompt').textContent = p.prompt;
+  document.getElementById('modal-prompt-box').className = 'modal-prompt-box' + (isGold ? ' gold' : '');
+  document.getElementById('modal-copiar-btn').className = 'modal-copiar' + (isGold ? ' gold' : '');
+  document.getElementById('modal-copiar-btn').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar prompt';
+  document.getElementById('modal-dica').textContent = p.dica;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  abertos.add(n);
+  const pct = Math.round((abertos.size / 23) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = abertos.size + ' de 23';
+}
+
+function fecharModal(e) { if (e.target === document.getElementById('modal')) fecharDireto(); }
+function fecharDireto() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharDireto(); });
+
+function copiarPrompt() {
+  const txt = document.getElementById('modal-prompt').textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.getElementById('modal-copiar-btn');
+    const isGold = btn.classList.contains('gold');
+    btn.innerHTML = '✓ Copiado!';
+    setTimeout(() => { btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar prompt'; }, 2000);
+  });
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
